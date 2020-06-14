@@ -19,7 +19,6 @@ func TestBucket(t *testing.T) {
 }
 
 func getBucket(bucket *Bucket, i int, wg sync.WaitGroup) {
-
 	if bucket.Get() {
 		fmt.Printf("success: %d \n", i)
 	} else {
