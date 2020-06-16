@@ -36,10 +36,20 @@ func NewSize(size int) *Queue {
 func NewCap(cap int) *Queue {
 	return &Queue{Data: make([]interface{}, 0, cap), cap: cap, Mutex: &sync.Mutex{}}
 }
-func TimeQueue(expireAfter time.Duration, cap int, tsp time.Duration) *Queue {
-	if tsp <= 0 {
-		tsp = 10 * time.Second
+
+func TimeQueue(expireAfter time.Duration, cap int) *Queue {
+	return &Queue{
+		Data:        make([]interface{}, 0, cap),
+		timeSpy:     true,
+		ExpireAfter: expireAfter,
+		cap:         cap,
+		timeStep:    10 * time.Second,
+		Mutex:       &sync.Mutex{},
 	}
+}
+
+// cap refers to its expand scope.When array of data is full,the array will automatically expand to add a cap amount
+func TimeQueueWithTimeStep(expireAfter time.Duration, cap int, tsp time.Duration) *Queue {
 	return &Queue{
 		Data:        make([]interface{}, 0, cap),
 		timeSpy:     true,
